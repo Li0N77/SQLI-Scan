@@ -31,7 +31,6 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36
 error = 0
 vuln = 0
 def is_vuln(now,lock):
-    global vuln
     with lock:
         id = now.value
         now.value += 1
@@ -52,7 +51,6 @@ def is_vuln(now,lock):
         t.sleep(0.5)
         if (res_two == original and res_one != original):
             print(f"{url_target} : is vuln")
-            vuln += 1
     except:
         None
     
@@ -74,6 +72,5 @@ if __name__ == "__main__":
             print("Exception occurred.")
     for p in processes:
         p.join()
-    print(f"Vulns : {vuln}")
     end = t.perf_counter()
     print(f"Finshed in {round(end-start,2)}")
