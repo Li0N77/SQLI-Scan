@@ -12,4 +12,4 @@ and it's target only the first parameter in url with the target parameter ex: ht
 git clone https://github.com/Li0N77/SQLI-Scan.git
 ```
 
-# for any issues send it to issues section
+### for any issues send it to issues section
